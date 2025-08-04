@@ -1,0 +1,5 @@
+replicaCount: 1
+image:
+  repository: youracr.azurecr.io/stripe-service
+  tag: latest
+  pullPolicy: Always
