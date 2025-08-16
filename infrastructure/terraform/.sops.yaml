@@ -1,0 +1,5 @@
+creation_rules:
+  - azure_keyvault:
+      - "https://tf-state-aks-otel-kv.vault.azure.net/keys/sopsKey/43ab463b333242f48c726c2b1f760dde"
+    encrypted_regex: '^(.*)$'
+    path_regex: '.*\.tfvars$'
