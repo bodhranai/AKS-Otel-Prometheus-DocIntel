@@ -1,4 +1,4 @@
- terraform {
+terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -8,15 +8,27 @@
       source  = "hashicorp/helm"
       version = "3.0.2"
     }
+     sops = {
+      source  = "carlpett/sops"
+      version = "1.2.1"
+    }
+     azuread = {
+      source  = "hashicorp/azuread"
+      version = ">= 2.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "3.7.2"
+    }
   }
 }
 
 provider "azurerm" {
   features {}
   use_cli         = true
-  subscription_id = "b5f42d6d-c117-422b-9a2c-dcf0001bb4be"
-  tenant_id       = "8ddcf98f-3188-4551-984e-159172c5386d"
-  client_id         = "<service_principal_appid>"
-  client_secret     = "<service_principal_password>"
-                     
+  subscription_id = data.sops_file.secrets.subscription_id
+  tenant_id       = data.sops_file.secrets.tenant_id
+  client_id       = data.sops_file.secrets.client_id
+  client_secret   = data.sops_file.secrets.client_secret
+
 } 

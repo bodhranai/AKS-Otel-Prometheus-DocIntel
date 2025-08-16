@@ -4,14 +4,7 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 3.0"
     }
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = ">= 2.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.7.2"
-    }
+   
     helm = {
       source  = "hashicorp/helm"
       version = "3.0.2"
@@ -62,3 +55,8 @@ output "storage_account_name" {
 output "container_name" {
   value = module.terraform_backend.container_name
 }
+
+data "sops_file" "secrets" {
+  source_file = "${path.module}/secrets.auto.tfvars.enc.yaml"
+}
+
