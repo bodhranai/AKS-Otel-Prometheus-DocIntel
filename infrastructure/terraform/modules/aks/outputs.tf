@@ -1,12 +1,16 @@
+# modules/aks/outputs.tf
 output "kube_config" {
-  value     = azurerm_kubernetes_cluster.aks.kube_config_raw
+  description = "Kube config for AKS"
+  value = {
+    host                   = azurerm_kubernetes_cluster.this.kube_config[0].host
+    client_certificate     = azurerm_kubernetes_cluster.this.kube_config[0].client_certificate
+    client_key             = azurerm_kubernetes_cluster.this.kube_config[0].client_key
+    cluster_ca_certificate = azurerm_kubernetes_cluster.this.kube_config[0].cluster_ca_certificate
+  }
   sensitive = true
 }
-
-output "aks_id" {
-  value = azurerm_kubernetes_cluster.aks.id
+output "oidc_issuer_url" {
+  value = azurerm_kubernetes_cluster.this.oidc_issuer_url
 }
 
-output "subnet_id" {
-  value = azurerm_subnet.aks_subnet.id
-}
+

@@ -35,13 +35,17 @@ variable "vnet_cidr" {
   description = "Address space for the VNet"
   type        = string
 }
+variable "subnet_id" {
+  description = "Subnet Id for the AKS cluster"
+  type        = string
+}
 
 variable "subnets" {
   description = "Map of subnets for the VNet"
   type        = map(string)
 }
 variable "namespace" {
-   description = "Ingress Namespace"
+  description = "Ingress Namespace"
   type        = string
 }
 ############################################

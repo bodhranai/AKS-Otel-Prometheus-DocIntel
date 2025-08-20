@@ -8,11 +8,11 @@ terraform {
       source  = "hashicorp/helm"
       version = "3.0.2"
     }
-     sops = {
+    sops = {
       source  = "carlpett/sops"
       version = "1.2.1"
     }
-     azuread = {
+    azuread = {
       source  = "hashicorp/azuread"
       version = ">= 2.0"
     }
@@ -23,22 +23,30 @@ terraform {
   }
 }
 
+provider "kubernetes" {
+  host                   = module.aks.kube_config.host
+  client_certificate     = base64decode(module.aks.kube_config.client_certificate)
+  client_key             = base64decode(module.aks.kube_config.client_key)
+  cluster_ca_certificate = base64decode(module.aks.kube_config.cluster_ca_certificate)
+}
 
 provider "helm" {
   kubernetes {
-    host                   = module.aks.kube_config.host
-    client_certificate     = base64decode(module.aks.kube_config.client_certificate)
-    client_key             = base64decode(module.aks.kube_config.client_key)
-    cluster_ca_certificate = base64decode(module.aks.kube_config.cluster_ca_certificate)
+    config_path = "~/.kube/config" # Path to your Kubernetes config file
   }
+}
+
+data "sops_file" "secrets" {
+  source_file = "secrets.auto.tfvars.enc.yaml"
 }
 
 provider "azurerm" {
   features {}
   use_cli         = true
-  subscription_id = data.sops_file.secrets.subscription_id
-  tenant_id       = data.sops_file.secrets.tenant_id
-  client_id       = data.sops_file.secrets.client_id
-  client_secret   = data.sops_file.secrets.client_secret
+  subscription_id = data.sops_file.secrets.data["subscription_id"]
+  tenant_id       = data.sops_file.secrets.data["tenant_id"]
+  client_id       = data.sops_file.secrets.data["client_id"]
+  client_secret   = data.sops_file.secrets.data["client_secret"]
 
-} 
+
+}

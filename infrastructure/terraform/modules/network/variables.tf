@@ -11,13 +11,13 @@ variable "location" {
 variable "vnet_cidr" {
   description = "CIDR block for the Virtual Network."
   type        = string
-  default =  "10.0.0.0/16"
-  
+  default     = "10.0.0.0/16"
+
 }
 
 variable "subnets" {
   description = "Map of subnet names and CIDR ranges"
-  type = map(string)
+  type        = map(string)
   default = {
     aks       = "10.0.1.0/24"
     workloads = "10.0.2.0/24"

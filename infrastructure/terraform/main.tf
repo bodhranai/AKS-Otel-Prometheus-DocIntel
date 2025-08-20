@@ -1,4 +1,9 @@
-
+# Resource Group module
+module "rg" {
+  source   = "./modules/resource_group"
+  name     = var.resource_group_name
+  location = local.region
+}
 # Network
 module "network" {
   source              = "./modules/network"
@@ -7,7 +12,7 @@ module "network" {
   subnets             = var.subnets
   env                 = var.env
   vnet_name           = var.vnet_name
-  resource_group_name = var.resource_group_name
+  resource_group_name = module.rg.name
 }
 # Variables
 
@@ -16,39 +21,30 @@ module "aks" {
   source              = "./modules/aks"
   cluster_name        = var.cluster_name
   location            = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = module.rg.name
   vnet_cidr           = var.vnet_cidr
   node_count          = var.node_count
   node_vm_size        = "Standard_DS2_v2"
   aks_subnet_cidr     = var.subnets["aks"]
   aks_version         = var.kubernetes_version
   env                 = var.env
-  
+  subnet_id           = module.network.subnet_ids["aks"]
+
 }
 
-# Extra Node Pool
-module "nodepool" {
-  source              = "./modules/nodepool"
-  node_count          = 2
-  node_vm_size        = "Standard_DS2_v2"
-  aks_subnet_cidr     = var.subnets["aks"]
-  vnet_cidr           = var.vnet_cidr
-  aks_version         = var.kubernetes_version
-  cluster_name        = var.cluster_name
-  location            = var.location
-  env                 = var.env
-  resource_group_name = var.resource_group_name
-}
 
 # Workload Identity (federated identity to AAD)
 module "workload_identity" {
   source              = "./modules/workload-identity"
+  resource_group_name = module.rg.name
+  location            = module.rg.location
+  oidc_issuer_url     = module.aks.oidc_issuer_url
 }
 
 # NGINX Ingress
 module "nginx" {
-  source    = "./modules/nginx"
-  namespace = "ingress-nginx"
+  source        = "./modules/nginx"
+  namespace     = "ingress-nginx"
   chart_version = var.nginx_version
 }
 

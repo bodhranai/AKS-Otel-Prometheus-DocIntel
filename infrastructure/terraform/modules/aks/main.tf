@@ -1,25 +1,12 @@
-resource "azurerm_user_assigned_identity" "base" {
-  name                = "base"
-  location            = azurerm_resource_group.this.location
-  resource_group_name = azurerm_resource_group.this.name
-}
-
-resource "azurerm_role_assignment" "base" {
-  scope                = azurerm_resource_group.this.id
-  role_definition_name = "Network Contributor"
-  principal_id         = azurerm_user_assigned_identity.base.principal_id
-}
-
 resource "azurerm_kubernetes_cluster" "this" {
   name                = "${var.env}-${var.cluster_name}"
-  location            = azurerm_resource_group.this.location
-  resource_group_name = azurerm_resource_group.this.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
   dns_prefix          = "devaks1"
 
   kubernetes_version      = var.aks_version
   private_cluster_enabled = false
-  node_resource_group     = "${zurerm_resource_group.this.name}-${var.env}-${var.cluster_name}"
-
+  node_resource_group     = "${var.resource_group_name}-${var.env}-${var.cluster_name}"
 
   # For production change to "Standard" 
   sku_tier = "Free"
@@ -44,9 +31,9 @@ resource "azurerm_kubernetes_cluster" "this" {
     }
   }
 
+  # 🔑 Switch to System Assigned Identity
   identity {
-    type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.base.id]
+    type = "SystemAssigned"
   }
 
   tags = {
@@ -56,8 +43,24 @@ resource "azurerm_kubernetes_cluster" "this" {
   lifecycle {
     ignore_changes = [default_node_pool[0].node_count]
   }
+}
+resource "azurerm_kubernetes_cluster_node_pool" "system" {
+  name                  = "system"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.this.id
+  vm_size               = var.node_vm_size
+  vnet_subnet_id        = var.subnet_id
+  orchestrator_version  = var.aks_version
 
-  depends_on = [
-    azurerm_role_assignment.base
-  ]
+  node_count = var.node_count
+  min_count  = 1
+  max_count  = 10
+
+  node_labels = {
+    role                                    = "system"
+    "kubernetes.azure.com/scalesetpriority" = "regular"
+  }
+
+  tags = {
+    env = var.env
+  }
 }

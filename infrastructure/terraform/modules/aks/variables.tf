@@ -26,6 +26,10 @@ variable "vnet_cidr" {
   description = "CIDR block for the Virtual Network"
   type        = string
 }
+variable "subnet_id" {
+  description = "Subnet Id for the AKS cluster"
+  type        = string
+}
 
 variable "aks_subnet_cidr" {
   description = "CIDR block for the AKS subnet"
