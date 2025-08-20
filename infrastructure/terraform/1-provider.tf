@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "4.39.0"
     }
+    kubernetes = {
+      source = "hashicorp/kubernetes"
+      version = "2.38.0"
+    }
     helm = {
       source  = "hashicorp/helm"
       version = "3.0.2"
@@ -30,9 +34,14 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(module.aks.kube_config.cluster_ca_certificate)
 }
 
+
+// @ts-ignore
 provider "helm" {
-  kubernetes {
-    config_path = "~/.kube/config" # Path to your Kubernetes config file
+  kubernetes = {
+    host                   = module.aks.kube_config.host
+    client_certificate     = base64decode(module.aks.kube_config.client_certificate)
+    client_key             = base64decode(module.aks.kube_config.client_key)
+    cluster_ca_certificate = base64decode(module.aks.kube_config.cluster_ca_certificate)
   }
 }
 
@@ -42,7 +51,6 @@ data "sops_file" "secrets" {
 
 provider "azurerm" {
   features {}
-  use_cli         = true
   subscription_id = data.sops_file.secrets.data["subscription_id"]
   tenant_id       = data.sops_file.secrets.data["tenant_id"]
   client_id       = data.sops_file.secrets.data["client_id"]
@@ -50,3 +58,12 @@ provider "azurerm" {
 
 
 }
+terraform {
+  backend "azurerm" {
+    resource_group_name   = "tf-state-rg"
+    storage_account_name  = "tfstateaksotel"
+    container_name        = "tfstate"
+    key                   = "terraform.tfstate"
+  }
+}
+
