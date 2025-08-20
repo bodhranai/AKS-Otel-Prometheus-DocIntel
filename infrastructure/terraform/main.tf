@@ -1,62 +1,64 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.0"
-    }
-   
-    helm = {
-      source  = "hashicorp/helm"
-      version = "3.0.2"
-    }
-  }
 
-  backend "local" {
-    path = "terraform.tfstate"
-  }
+# Network
+module "network" {
+  source              = "./modules/network"
+  location            = var.location
+  vnet_cidr           = var.vnet_cidr
+  subnets             = var.subnets
+  env                 = var.env
+  vnet_name           = var.vnet_name
+  resource_group_name = var.resource_group_name
+}
+# Variables
 
+# AKS Cluster
+module "aks" {
+  source              = "./modules/aks"
+  cluster_name        = var.cluster_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  vnet_subnet_id      = module.network.subnet_ids["aks"]
+  vnet_cidr           = var.vnet_cidr
+  node_count          = var.node_count
+  node_vm_size        = "Standard_DS2_v2"
+  aks_subnet_cidr     = var.subnets["aks"]
+  aks_version         = var.kubernetes_version
+  env                 = var.env
+  enable_oidc_issuer  = true
+  workload_identity   = true
 }
 
-provider "azurerm" {
-  features {}
-  subscription_id = "b5f42d6d-c117-422b-9a2c-dcf0001bb4be"
-  tenant_id       = "8ddcf98f-3188-4551-984e-159172c5386d"
-
+# Extra Node Pool
+module "nodepool" {
+  source              = "./modules/nodepool"
+  name                = "systempool"
+  vm_size             = "Standard_DS2_v2"
+  node_count          = 2
+  node_vm_size        = "Standard_DS2_v2"
+  aks_subnet_cidr     = var.subnets["aks"]
+  vnet_cidr           = var.vnet_cidr
+  aks_version         = var.kubernetes_version
+  cluster_name        = var.cluster_name
+  location            = var.location
+  env                 = var.env
+  resource_group_name = var.resource_group_name
 }
 
-provider "azuread" {}
-provider "random" {}
-
-module "terraform_backend" {
-  source               = "./modules/tf_backend"
-  resource_group_name  = "tf-state-rg"
-  location             = "East US 2"
-  storage_account_name = "tfstateaksotel"
-  container_name       = "tfstate"
+# Workload Identity (federated identity to AAD)
+module "workload_identity" {
+  source              = "./modules/workload-identity"
 }
 
-output "sp_client_id" {
-  value = module.terraform_backend.sp_client_id
+# NGINX Ingress
+module "nginx" {
+  source    = "./modules/nginx"
+  namespace = "ingress-nginx"
+  chart_version = var.nginx_version
 }
 
-output "sp_client_secret" {
-  value     = module.terraform_backend.sp_client_secret
-  sensitive = true
-}
 
-output "sp_tenant_id" {
-  value = "8ddcf98f-3188-4551-984e-159172c5386d" #module.terraform_backend.sp_tenant_id
+# Cert Manager
+module "cert_manager" {
+  source        = "./modules/certmanager"
+  chart_version = "v1.13.2"
 }
-
-output "storage_account_name" {
-  value = module.terraform_backend.storage_account_name
-}
-
-output "container_name" {
-  value = module.terraform_backend.container_name
-}
-
-data "sops_file" "secrets" {
-  source_file = "${path.module}/secrets.auto.tfvars.enc.yaml"
-}
-

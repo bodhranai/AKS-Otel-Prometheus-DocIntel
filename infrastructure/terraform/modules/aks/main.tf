@@ -11,26 +11,18 @@ resource "azurerm_role_assignment" "base" {
 }
 
 resource "azurerm_kubernetes_cluster" "this" {
-  name                = "${local.env}-${local.aks_name}"
+  name                = "${var.env}-${var.cluster_name}"
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
   dns_prefix          = "devaks1"
 
-  kubernetes_version      = local.aks_version
+  kubernetes_version      = var.aks_version
   private_cluster_enabled = false
-  node_resource_group     = "${local.resource_group_name}-${local.env}-${local.aks_name}"
+  node_resource_group     = "${zurerm_resource_group.this.name}-${var.env}-${var.cluster_name}"
 
-  # It's in Preview
-  # api_server_access_profile {
-  #   vnet_integration_enabled = true
-  #   subnet_id                = azurerm_subnet.subnet1.id
-  # }
 
   # For production change to "Standard" 
   sku_tier = "Free"
-
-  oidc_issuer_enabled       = true
-  workload_identity_enabled = true
 
   network_profile {
     network_plugin = "azure"
@@ -41,8 +33,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   default_node_pool {
     name                 = "general"
     vm_size              = "Standard_D2_v2"
-    vnet_subnet_id       = azurerm_subnet.subnet1.id
-    orchestrator_version = local.aks_version
+    orchestrator_version = var.aks_version
     type                 = "VirtualMachineScaleSets"
     node_count           = 1
     min_count            = 1
@@ -59,7 +50,7 @@ resource "azurerm_kubernetes_cluster" "this" {
   }
 
   tags = {
-    env = local.env
+    env = var.env
   }
 
   lifecycle {

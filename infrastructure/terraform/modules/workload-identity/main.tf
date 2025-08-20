@@ -6,7 +6,7 @@ resource "azurerm_user_assigned_identity" "dev_test" {
 
 resource "azurerm_federated_identity_credential" "dev_test" {
   name                = "dev-test"
-  resource_group_name = local.resource_group_name
+  resource_group_name = azurerm_resource_group.this.name
   audience            = ["api://AzureADTokenExchange"]
   issuer              = azurerm_kubernetes_cluster.this.oidc_issuer_url
   parent_id           = azurerm_user_assigned_identity.dev_test.id
