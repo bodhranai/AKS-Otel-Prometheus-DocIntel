@@ -51,13 +51,13 @@ data "sops_file" "secrets" {
 
 provider "azurerm" {
   features {}
-  subscription_id = data.sops_file.secrets.data["subscription_id"]
-  tenant_id       = data.sops_file.secrets.data["tenant_id"]
-  client_id       = data.sops_file.secrets.data["client_id"]
-  client_secret   = data.sops_file.secrets.data["client_secret"]
-
+  subscription_id = var.subscription_id
+  tenant_id       = var.tenant_id
+  client_id       = var.client_id
+  client_secret   = var.client_secret
 
 }
+
 terraform {
   backend "azurerm" {
     resource_group_name   = "tf-state-rg"
