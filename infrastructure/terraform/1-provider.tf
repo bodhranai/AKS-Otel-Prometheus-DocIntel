@@ -5,7 +5,7 @@ terraform {
       version = "4.39.0"
     }
     kubernetes = {
-      source = "hashicorp/kubernetes"
+      source  = "hashicorp/kubernetes"
       version = "2.38.0"
     }
     helm = {
@@ -51,19 +51,19 @@ data "sops_file" "secrets" {
 
 provider "azurerm" {
   features {}
-  subscription_id = var.subscription_id
-  tenant_id       = var.tenant_id
-  client_id       = var.client_id
-  client_secret   = var.client_secret
+  subscription_id = local.subscription_id
+  tenant_id       = local.tenant_id
+  client_id       = local.client_id
+  client_secret   = local.client_secret
 
 }
 
 terraform {
   backend "azurerm" {
-    resource_group_name   = "tf-state-rg"
-    storage_account_name  = "tfstateaksotel"
-    container_name        = "tfstate"
-    key                   = "terraform.tfstate"
+    resource_group_name  = "tf-state-rg"
+    storage_account_name = "tfstateaksotel"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
   }
 }
 
