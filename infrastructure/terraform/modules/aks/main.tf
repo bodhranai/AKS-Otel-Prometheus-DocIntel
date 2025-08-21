@@ -23,8 +23,8 @@ resource "azurerm_kubernetes_cluster" "this" {
     orchestrator_version = var.aks_version
     type                 = "VirtualMachineScaleSets"
     node_count           = 1
-    min_count            = 1
-    max_count            = 10
+   # min_count            = 1
+   # max_count            = 10
 
     node_labels = {
       role = "general"
