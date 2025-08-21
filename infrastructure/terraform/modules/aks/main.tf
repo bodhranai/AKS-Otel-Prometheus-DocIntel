@@ -10,6 +10,12 @@ resource "azurerm_kubernetes_cluster" "this" {
 
   # For production change to "Standard" 
   sku_tier = "Free"
+  
+   timeouts {
+    create = "60m"
+    update = "60m"
+    delete = "60m"
+  }
 
   network_profile {
     network_plugin = "azure"
