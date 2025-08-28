@@ -8,14 +8,13 @@ tags = {
 
 vnet_name = "vnet-otel-prom-dev"
 vnet_cidr = "10.0.0.0/16" # <-- Replace with your actual VNet CIDR
-subnet_id = ""            # <-- Replace with your actual subnet ID
 subnets = {
   aks = "10.0.1.0/24" # <-- Replace/add subnets as needed
 }
 namespace = "ingress-nginx" # <-- Replace with your actual namespace
 
 cluster_name       = "aks-otel-prom-dev"
-kubernetes_version = "1.27.3"
+kubernetes_version = "1.33.4"
 node_count         = 3
 node_vm_size       = "Standard_DS2_v2"
 

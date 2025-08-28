@@ -52,11 +52,11 @@ data "sops_file" "secrets" {
 
 provider "azurerm" {
   features {}
- subscription_id = data.sops_file.secrets.data["subscription_id"]
+  subscription_id = data.sops_file.secrets.data["subscription_id"]
   tenant_id       = data.sops_file.secrets.data["tenant_id"]
   client_id       = data.sops_file.secrets.data["client_id"]
   client_secret   = data.sops_file.secrets.data["client_secret"]
- 
+
 }
 
 terraform {

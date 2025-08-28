@@ -8,7 +8,7 @@ variable "cluster_name" {
   description = "Name of the AKS cluster"
   type        = string
 }
-variable "aks_version" {
+variable "kubernetes_version" {
   description = "AKS version"
   type        = string
 }

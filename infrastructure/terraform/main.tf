@@ -17,7 +17,7 @@ module "network" {
 # Variables
 
 # AKS Cluster
-/* module "aks" {
+ module "aks" {
   source              = "./modules/aks"
   cluster_name        = var.cluster_name
   location            = var.location
@@ -26,11 +26,12 @@ module "network" {
   node_count          = var.node_count
   node_vm_size        = "Standard_DS2_v2"
   aks_subnet_cidr     = var.subnets["aks"]
-  aks_version         = var.kubernetes_version
+  kubernetes_version  = var.kubernetes_version
   env                 = var.env
   subnet_id           = module.network.subnet_ids["aks"]
 
 }
+/*
 
 
 # Workload Identity (federated identity to AAD)

@@ -4,14 +4,14 @@ resource "azurerm_kubernetes_cluster" "this" {
   resource_group_name = var.resource_group_name
   dns_prefix          = "devaks1"
 
-  kubernetes_version      = var.aks_version
+  kubernetes_version      = var.kubernetes_version
   private_cluster_enabled = false
   node_resource_group     = "${var.resource_group_name}-${var.env}-${var.cluster_name}"
 
   # For production change to "Standard" 
   sku_tier = "Free"
-  
-   timeouts {
+
+  timeouts {
     create = "60m"
     update = "60m"
     delete = "60m"
@@ -26,11 +26,11 @@ resource "azurerm_kubernetes_cluster" "this" {
   default_node_pool {
     name                 = "general"
     vm_size              = "Standard_D2_v2"
-    orchestrator_version = var.aks_version
+    orchestrator_version = var.kubernetes_version
     type                 = "VirtualMachineScaleSets"
     node_count           = 1
-   # min_count            = 1
-   # max_count            = 10
+    # min_count            = 1
+    # max_count            = 10
 
     node_labels = {
       role = "general"
@@ -55,7 +55,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "system" {
   kubernetes_cluster_id = azurerm_kubernetes_cluster.this.id
   vm_size               = var.node_vm_size
   vnet_subnet_id        = var.subnet_id
-  orchestrator_version  = var.aks_version
+  orchestrator_version  = var.kubernetes_version
 
   node_count = var.node_count
   min_count  = 1
