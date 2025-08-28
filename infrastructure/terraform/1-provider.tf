@@ -2,19 +2,19 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "4.41.0"
+      version = ">=4.41.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.38.0"
+      version = ">=2.38.0"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "3.0.2"
+      version = ">=3.0.2"
     }
     sops = {
       source  = "carlpett/sops"
-      version = "1.2.1"
+      version = ">=1.2.1"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -22,7 +22,7 @@ terraform {
     }
     random = {
       source  = "hashicorp/random"
-      version = "3.7.2"
+      version = ">=3.7.2"
     }
   }
 }
@@ -49,12 +49,17 @@ data "sops_file" "secrets" {
   source_file = "secrets.auto.tfvars.enc.yaml"
 }
 
+
 provider "azurerm" {
   features {}
-  subscription_id = local.subscription_id
-  tenant_id       = local.tenant_id
-  client_id       = local.client_id
-  client_secret   = local.client_secret
+ subscription_id = data.sops_file.secrets.data["subscription_id"]
+  tenant_id       = data.sops_file.secrets.data["tenant_id"]
+  client_id       = data.sops_file.secrets.data["client_id"]
+  client_secret   = data.sops_file.secrets.data["client_secret"]
+   # increase default timeouts
+  request_timeout {
+    read = "5m"
+  }
 
 }
 
