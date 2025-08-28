@@ -5,7 +5,7 @@ location = "westus"
 resource_group_name = "rg-otel-prom-westus-prod"
 
 tags = {
-  environment = env
+  environment = "prod"
   project     = "AKS-Otel-Prometheus-DocIntel"
 }
 
