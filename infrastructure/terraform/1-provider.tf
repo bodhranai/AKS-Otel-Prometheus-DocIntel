@@ -56,11 +56,7 @@ provider "azurerm" {
   tenant_id       = data.sops_file.secrets.data["tenant_id"]
   client_id       = data.sops_file.secrets.data["client_id"]
   client_secret   = data.sops_file.secrets.data["client_secret"]
-   # increase default timeouts
-  request_timeout {
-    read = "5m"
-  }
-
+ 
 }
 
 terraform {

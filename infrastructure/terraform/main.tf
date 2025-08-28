@@ -17,7 +17,7 @@ module "network" {
 # Variables
 
 # AKS Cluster
-module "aks" {
+/* module "aks" {
   source              = "./modules/aks"
   cluster_name        = var.cluster_name
   location            = var.location
@@ -53,4 +53,4 @@ module "nginx" {
 module "cert_manager" {
   source        = "./modules/certmanager"
   chart_version = "v1.13.2"
-}
+} */
