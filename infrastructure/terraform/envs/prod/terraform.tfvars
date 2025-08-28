@@ -2,7 +2,7 @@ env      = "prod"
 location = "westus"
 
 # Resource group name dynamically built
-resource_group_name = "rg-otel-prom-${lower(location)}-${env}"
+resource_group_name = "rg-otel-prom-westus-prod"
 
 tags = {
   environment = env
@@ -10,7 +10,7 @@ tags = {
 }
 
 # VNet dynamically named
-vnet_name = "vnet-otel-prom-${env}"
+vnet_name = "vnet-otel-prom-prod"
 vnet_cidr = "10.0.0.0/16"
 
 subnets = {
@@ -21,7 +21,7 @@ subnets = {
 namespace = "ingress-nginx"
 
 # AKS cluster dynamically named
-cluster_name       = "aks-otel-prom-${env}"
+cluster_name       = "aks-otel-prom-prod"
 kubernetes_version = "1.33.4"
 node_count         = 3
 node_vm_size       = "Standard_DS2_v2"
