@@ -26,9 +26,9 @@ variable "vnet_cidr" {
   description = "CIDR block for the Virtual Network"
   type        = string
 }
-variable "subnet_id" {
-  description = "Subnet Id for the AKS cluster"
-  type        = string
+variable "subnet_ids" {
+  description = "Map of subnet IDs"
+  type        = map(string)
 }
 
 variable "aks_subnet_cidr" {

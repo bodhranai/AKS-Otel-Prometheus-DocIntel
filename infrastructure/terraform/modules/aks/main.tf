@@ -54,7 +54,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "system" {
   name                  = "system"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.this.id
   vm_size               = var.node_vm_size
-  vnet_subnet_id        = var.subnet_id
+  vnet_subnet_id        = var.subnet_ids["aks"]
   orchestrator_version  = var.kubernetes_version
 
   node_count = var.node_count

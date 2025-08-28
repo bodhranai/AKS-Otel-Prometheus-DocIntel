@@ -28,10 +28,10 @@ module "network" {
   aks_subnet_cidr     = var.subnets["aks"]
   kubernetes_version  = var.kubernetes_version
   env                 = var.env
-  subnet_id           = module.network.subnet_ids["aks"]
+  subnet_ids = module.network.subnet_ids
 
 }
-/*
+
 
 
 # Workload Identity (federated identity to AAD)
@@ -41,7 +41,7 @@ module "workload_identity" {
   location            = module.rg.location
   oidc_issuer_url     = module.aks.oidc_issuer_url
 }
-
+/*
 # NGINX Ingress
 module "nginx" {
   source        = "./modules/nginx"
