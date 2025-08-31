@@ -2,29 +2,35 @@ env      = "dev"
 location = "westus"
 
 # Resource group name dynamically built
-resource_group_name = "rg-otel-prom-${lower(location)}-${env}"
+resource_group_name = "rg-otel-prom-westus-dev"
 
 tags = {
-  environment = env
+  environment = "dev"
   project     = "AKS-Otel-Prometheus-DocIntel"
 }
 
-# VNet dynamically named
-vnet_name = "vnet-otel-prom-${env}"
-vnet_cidr = "10.0.0.0/16"
-
+# Networking
+vnet_name     = "vnet-aks-dev"
+address_space = ["10.0.0.0/8"]
 subnets = {
-  aks = "10.0.1.0/24"
-  # add more subnets if needed
+  aks       = ["10.240.0.0/16"]
+  workloads = ["10.241.0.0/16"]
 }
 
 namespace = "ingress-nginx"
 
-# AKS cluster dynamically named
-cluster_name       = "aks-otel-prom-${env}"
-kubernetes_version = "1.33.2"
-node_count         = 3
-node_vm_size       = "Standard_DS2_v2"
+# AKS
+cluster_name       = "aks-dev"
+dns_prefix         = "aksdev"
+kubernetes_version = "1.30.3"
+
+# Node Pools
+system_node_count   = 3
+system_node_vm_size = "Standard_DS2_v2"
+
+user_node_count   = 5
+user_node_vm_size = "Standard_DS3_v2"
+
 
 # Helm chart versions
 nginx_version        = "4.11.0"

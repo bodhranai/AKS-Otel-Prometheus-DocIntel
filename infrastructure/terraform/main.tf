@@ -7,7 +7,7 @@ module "rg" {
 # Network
 module "network" {
   source              = "./modules/network"
-  address_space = ["10.0.0.0/8"]
+  address_space       = ["10.0.0.0/8"]
   location            = var.location
   subnets             = var.subnets
   env                 = var.env
@@ -17,20 +17,17 @@ module "network" {
 # Variables
 
 # AKS Cluster
- module "aks" {
+module "aks" {
   source              = "./modules/aks"
   cluster_name        = var.cluster_name
   location            = var.location
   resource_group_name = module.rg.name
-  vnet_cidr           = var.vnet_cidr
   node_count          = var.node_count
-  node_vm_size        = "Standard_DS2_v2"
-  aks_subnet_cidr     = var.subnets["aks"]
   kubernetes_version  = var.kubernetes_version
- 
   subnet_ids          = module.network.subnet_ids
   dns_prefix          = var.dns_prefix
-
+  service_cidr        = var.service_cidr
+  env                 = var.env
 }
 
 

@@ -1,4 +1,6 @@
-variable "env" {}
+variable "env" {
+  # You can set a default value if needed, e.g. default = "dev"
+}
 variable "cluster_name" {}
 variable "location" {}
 variable "resource_group_name" {}

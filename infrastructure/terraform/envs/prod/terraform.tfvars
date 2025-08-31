@@ -5,28 +5,31 @@ location = "westus"
 resource_group_name = "rg-otel-prom-westus-prod"
 
 tags = {
-    environment = "prod"
-    project     = "AKS-Otel-Prometheus-DocIntel"
+  environment = "prod"
+  project     = "AKS-Otel-Prometheus-DocIntel"
 }
 
-# VNet dynamically named
-vnet_name = "vnet-otel-prom-prod"
-vnet_cidr = "10.0.0.0/16"
-
+# Networking
+vnet_name     = "vnet-aks-prod"
+address_space = ["10.0.0.0/8"]
 subnets = {
-  aks = "10.0.1.0/24"
-  # add more subnets if needed
+  aks       = ["10.240.0.0/16"]
+  workloads = ["10.241.0.0/16"]
 }
 
 namespace = "ingress-nginx"
 
-# AKS cluster dynamically named
-cluster_name       = "aks-otel-prom-prod"
-kubernetes_version = "1.33.2"
-node_count         = 3
-node_vm_size       = "Standard_DS2_v2"
-service_cidr   = "10.240.0.0/16"
-dns_service_ip = "10.240.0.10"
+# AKS
+cluster_name       = "aks-prod"
+dns_prefix         = "aksprod"
+kubernetes_version = "1.30.3"
+
+# Node Pools
+system_node_count   = 3
+system_node_vm_size = "Standard_DS2_v2"
+
+user_node_count   = 5
+user_node_vm_size = "Standard_DS3_v2"
 
 
 # Helm chart versions

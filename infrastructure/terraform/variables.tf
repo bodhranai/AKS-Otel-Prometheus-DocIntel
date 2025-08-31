@@ -35,6 +35,10 @@ variable "vnet_cidr" {
   description = "Address space for the VNet"
   type        = string
 }
+variable "service_cidr" {
+  description = "Service CIDR for the AKS cluster"
+  type        = string
+}
 variable "subnets" {
   description = "Map of subnet_name => [address_prefixes]"
   type        = map(list(string))
