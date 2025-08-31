@@ -30,6 +30,10 @@ variable "vnet_name" {
   description = "Name of the Virtual Network"
   type        = string
 }
+variable "address_space" {
+  description = "Address space for the VNet"
+  type        = list(string)
+}
 
 variable "vnet_cidr" {
   description = "Address space for the VNet"

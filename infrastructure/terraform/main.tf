@@ -7,7 +7,7 @@ module "rg" {
 # Network
 module "network" {
   source              = "./modules/network"
-  address_space       = ["10.0.0.0/8"]
+  address_space       = var.address_space
   location            = var.location
   subnets             = var.subnets
   env                 = var.env
