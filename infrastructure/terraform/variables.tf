@@ -31,8 +31,7 @@ variable "vnet_name" {
   type        = string
 }
 variable "address_space" {
-  description = "Address space for the VNet"
-  type        = list(string)
+  type = list(string)
 }
 
 variable "vnet_cidr" {

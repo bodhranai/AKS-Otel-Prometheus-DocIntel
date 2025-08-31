@@ -12,7 +12,8 @@ tags = {
 # Networking
 vnet_name     = "vnet-aks-prod"
 address_space = ["10.0.0.0/8"]
-service_cidr = "10.2.0.0/24"
+
+service_cidr = "172.16.0.0/12"
 
 subnets = {
   aks       = ["10.240.0.0/16"]
