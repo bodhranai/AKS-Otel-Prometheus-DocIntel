@@ -7,6 +7,7 @@ variable "resource_group_name" {}
 variable "dns_prefix" {}
 variable "kubernetes_version" {}
 variable "service_cidr" {}
+variable "dns_service_ip" {}
 
 variable "system_node_count" {
   default = 2

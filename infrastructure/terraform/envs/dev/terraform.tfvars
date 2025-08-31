@@ -13,6 +13,7 @@ tags = {
 vnet_name     = "vnet-aks-dev"
 address_space = ["10.0.0.0/8"]
 service_cidr = "172.16.0.0/12"
+dns_service_ip = "172.16.0.10"
 subnets = {
   aks       = ["10.240.0.0/16"]
   workloads = ["10.241.0.0/16"]

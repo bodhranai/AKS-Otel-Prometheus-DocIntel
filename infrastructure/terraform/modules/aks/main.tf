@@ -20,8 +20,8 @@ resource "azurerm_kubernetes_cluster" "this" {
   network_profile {
     network_plugin = "azure"
     network_policy = "azure"
-    dns_service_ip = "10.2.0.10"
-    service_cidr   = var.service_cidr #"10.2.0.0/24"
+    dns_service_ip = var.dns_service_ip
+    service_cidr   = var.service_cidr
   }
 
   default_node_pool {
