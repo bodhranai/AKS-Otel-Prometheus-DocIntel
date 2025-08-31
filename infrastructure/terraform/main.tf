@@ -7,8 +7,8 @@ module "rg" {
 # Network
 module "network" {
   source              = "./modules/network"
+  address_space = ["10.0.0.0/8"]
   location            = var.location
-  vnet_cidr           = var.vnet_cidr
   subnets             = var.subnets
   env                 = var.env
   vnet_name           = var.vnet_name
@@ -27,13 +27,14 @@ module "network" {
   node_vm_size        = "Standard_DS2_v2"
   aks_subnet_cidr     = var.subnets["aks"]
   kubernetes_version  = var.kubernetes_version
-  env                 = var.env
-  subnet_ids = module.network.subnet_ids
+ 
+  subnet_ids          = module.network.subnet_ids
+  dns_prefix          = var.dns_prefix
 
 }
 
 
-
+/*
 # Workload Identity (federated identity to AAD)
 module "workload_identity" {
   source              = "./modules/workload-identity"
@@ -41,7 +42,7 @@ module "workload_identity" {
   location            = module.rg.location
   oidc_issuer_url     = module.aks.oidc_issuer_url
 }
-/*
+
 # NGINX Ingress
 module "nginx" {
   source        = "./modules/nginx"

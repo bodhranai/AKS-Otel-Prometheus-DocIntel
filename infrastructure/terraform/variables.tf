@@ -36,9 +36,10 @@ variable "vnet_cidr" {
   type        = string
 }
 variable "subnets" {
-  description = "Map of subnets for the VNet"
-  type        = map(string)
+  description = "Map of subnet_name => [address_prefixes]"
+  type        = map(list(string))
 }
+variable "dns_prefix" {}
 variable "namespace" {
   description = "Ingress Namespace"
   type        = string

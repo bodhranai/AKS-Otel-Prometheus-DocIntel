@@ -22,7 +22,7 @@ namespace = "ingress-nginx"
 
 # AKS cluster dynamically named
 cluster_name       = "aks-otel-prom-${env}"
-kubernetes_version = "1.33.4"
+kubernetes_version = "1.33.2"
 node_count         = 3
 node_vm_size       = "Standard_DS2_v2"
 
