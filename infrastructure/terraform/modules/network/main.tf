@@ -16,4 +16,9 @@ resource "azurerm_subnet" "this" {
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes     = each.value
   depends_on           = [azurerm_virtual_network.this]
+  timeouts {
+    create = "60m"
+    update = "60m"
+    delete = "60m"
+  }
 }
