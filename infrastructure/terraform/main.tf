@@ -28,6 +28,7 @@ module "aks" {
   dns_prefix          = var.dns_prefix
   service_cidr        = var.service_cidr
   env                 = var.env
+  dns_service_ip      = var.dns_service_ip
 }
 
 
