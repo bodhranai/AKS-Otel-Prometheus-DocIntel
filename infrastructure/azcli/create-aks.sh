@@ -52,9 +52,11 @@ az aks create \
   --generate-ssh-keys \
   --network-plugin azure \
   --network-policy azure \
+  --network-plugin-mode overlay \
   --dns-service-ip "$DNS_SERVICE_IP" \
   --service-cidr "$SERVICE_CIDR" \
   --pod-cidr "$POD_CIDR" \
+ 
   --nodepool-name "$NODEPOOL_NAME" \
   --node-vm-size "$NODE_VM_SIZE" \
   --no-wait \

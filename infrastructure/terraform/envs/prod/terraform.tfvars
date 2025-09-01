@@ -12,9 +12,9 @@ tags = {
 # Networking
 vnet_name      = "vnet-westus-prod"
 address_space  = ["10.0.0.0/8"]
-dns_service_ip = "172.16.0.10"
-
-service_cidr = "172.16.0.0/12"
+dns_service_ip = "10.2.0.10"
+pod_cidr       = "10.244.0.0/16"
+service_cidr = "10.2.0.0/16"
 
 subnets = {
   aks       = ["10.240.0.0/16"]
@@ -30,7 +30,7 @@ kubernetes_version = "1.30.3"
 
 # Node Pools
 system_node_count   = 3
-system_node_vm_size = "Standard_DS2_v2"
+system_node_vm_size = "Standard_DS2_v3"
 
 user_node_count   = 5
 user_node_vm_size = "Standard_DS3_v2"

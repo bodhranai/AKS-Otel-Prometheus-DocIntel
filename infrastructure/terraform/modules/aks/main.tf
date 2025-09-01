@@ -20,8 +20,10 @@ resource "azurerm_kubernetes_cluster" "this" {
   network_profile {
     network_plugin = "azure"
     network_policy = "azure"
+    network_plugin_mode = "overlay"
     dns_service_ip = var.dns_service_ip
     service_cidr   = var.service_cidr
+    pod_cidr       = var.pod_cidr
   }
 
   default_node_pool {

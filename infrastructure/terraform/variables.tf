@@ -42,6 +42,10 @@ variable "service_cidr" {
   description = "Service CIDR for the AKS cluster"
   type        = string
 }
+variable "pod_cidr" {
+  description = "Pod CIDR for the AKS cluster"
+  type        = string
+}
 variable "dns_service_ip" {
   description = "DNS service IP for the AKS cluster"
   type        = string
