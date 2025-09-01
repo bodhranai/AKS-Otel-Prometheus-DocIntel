@@ -18,7 +18,7 @@ service_cidr = "172.16.0.0/12"
 
 subnets = {
   aks       = ["10.240.0.0/16"]
-  workloads = ["10.241.0.0/16"]
+  #workloads = ["10.241.0.0/16"]
 }
 
 namespace = "ingress-nginx"
