@@ -29,10 +29,11 @@ module "aks" {
   service_cidr        = var.service_cidr
   env                 = var.env
   dns_service_ip      = var.dns_service_ip
+  pod_cidr            = var.pod_cidr
 }
 
 
-/*
+
 # Workload Identity (federated identity to AAD)
 module "workload_identity" {
   source              = "./modules/workload-identity"
@@ -53,4 +54,4 @@ module "nginx" {
 module "cert_manager" {
   source        = "./modules/certmanager"
   chart_version = "v1.13.2"
-} */
+} 
